@@ -30,4 +30,4 @@ python run.py
 python -m pytest
 ```
 
-Интерфейс разрабатывается в ветке `feature/ui` и предлагается в `develop` через Pull Request.
+Подробная инструкция по работе с приложением находится в [USER_GUIDE.md](USER_GUIDE.md).
