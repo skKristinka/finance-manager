@@ -1,13 +1,27 @@
+from exceptions import ValidationError
+
 class Category:
-    """
-    Класс для категории (например, 'Еда', 'Зарплата').
-    type: 'income' (доход) или 'expense' (расход).
-    """
-    def __init__(self, name: str, type: str):
-        if not name or not isinstance(name, str):
-            raise ValueError("Название категории не может быть пустым.")
-        if type not in ('income', 'expense'):
-            raise ValueError("Тип категории должен быть 'income' или 'expense'.")
-        
+    """Класс для категории с защитой данных."""
+    def init(self, name: str, type: str):
         self.name = name
         self.type = type
+
+    @property
+    def name(self) -> str:
+        return self._name
+
+    @name.setter
+    def name(self, value: str):
+        if not value or not isinstance(value, str):
+            raise ValidationError("Название категории должно быть непустой строкой.")
+        self._name = value.strip()
+
+    @property
+    def type(self) -> str:
+        return self._type
+
+    @type.setter
+    def type(self, value: str):
+        if value not in ('income', 'expense'):
+            raise ValidationError("Тип категории должен быть строго 'income' или 'expense'.")
+        self._type = value
