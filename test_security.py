@@ -1,23 +1,19 @@
+import pytest
 from src.finance_manager.account import Account
-from src.finance_manager.category import Category
-from src.finance_manager.transaction import Transaction
 
-def run_tests():
-    print("--- QA: Проверка работы системы ---\n")
-    try:
-        acc = Account("Тест", -500)
-        # Если программа не выдаст ошибку, она напечатает это:
-        print(f"БАГ 1: Счет успешно создан с отрицательным балансом: {acc.balance}")
-    except Exception as e:
-        print(f"ОК: Ошибка перехвачена: {e}")
+def test_negative_balance_creation():
+    """Проверка: нельзя создать счет с отрицательным балансом."""
+    with pytest.raises(Exception):
+        Account("Тест", -500)
 
-    try:
-        acc2 = Account("Тест2", 100)
-        acc2.withdraw(5000)
-        # Если овердрафт не заблокирован, баланс уйдет в минус:
-        print(f"БАГ 2: Удалось снять 5000 при балансе 100. Итог: {acc2.balance}")
-    except Exception as e:
-        print(f"ОК: Защита от снятия сработала: {e}")
+def test_overdraft_protection():
+    """Проверка: нельзя снять сумму, превышающую текущий баланс."""
+    acc = Account("Тест2", 100)
+    with pytest.raises(Exception):
+        acc.withdraw(5000)
 
-if __name__ == "__main__":
-    run_tests()
+def test_positive_scenario():
+    """Проверка: корректное снятие средств работает штатно."""
+    acc = Account("Тест3", 1000)
+    acc.withdraw(500)
+    assert acc.balance == 500
