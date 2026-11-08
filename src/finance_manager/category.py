@@ -1,8 +1,8 @@
-from exceptions import ValidationError
+from .exceptions import ValidationError
 
 class Category:
     """Класс для категории с защитой данных."""
-    def init(self, name: str, type: str):
+    def __init__(self, name: str, type: str):
         self.name = name
         self.type = type
 
